@@ -53,7 +53,7 @@ if __name__ == '__main__':
                 print "sats ", gpsc.satellites
             else:
                 print "Looking for satellites"
-	    time.sleep(0.5)
+	    time.sleep(1)
 
     #Ctrl C
     except KeyboardInterrupt:

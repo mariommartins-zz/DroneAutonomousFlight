@@ -57,12 +57,12 @@ def getCoefAng(latI,longI,latF,longF):
 def getAngle(latI,longI,latA,longA,latF,longF):
 		#Multiplicando por 10000 pois se notou que para distancias curtas de poucos metros
 		#	a variacao das cordenadas se da a partir da quarta casa decimal
-	latI = (latI - latA) * 10000
-	longI = (longI - longA) * 10000
-	latF = (latF - latA) * 10000
-	longF = (longF - longA) * 10000
-	latA = 0
-	longA = 0
+    latI = (latI - latA) * 10000
+    longI = (longI - longA) * 10000
+    latF = (latF - latA) * 10000
+    longF = (longF - longA) * 10000
+    latA = 0
+    longA = 0
 
     coefAngI = getCoefAng(longI, longI, latA, longA)
     coefAngF = getCoefAng(latA, longA, latF, longF)
@@ -105,9 +105,9 @@ if __name__ == '__main__':
         # start drone
         print "Inicializa Drone"
 		
-		print "Battery: x"    # Gives a battery-status
+	print "Battery: x"    # Gives a battery-status
         
-		print "Buscando satelites..."
+	print "Buscando satelites..."
         while True:
             if ( len(gpsc.satellites) > 0 ):
 
@@ -116,7 +116,7 @@ if __name__ == '__main__':
 
                 #-------VERIFICA SE POSIcaO INICIAL == DESTINO---------------------------------
                 print "Verifica direcao e sentido do drone"
-				latAtual = gpsc.fix.latitude
+		latAtual = gpsc.fix.latitude
                 longAtual = gpsc.fix.longitude
 
                 distancia = getDistanceByCoordinates(latAtual,longAtual,latDest,longDest)
@@ -124,7 +124,7 @@ if __name__ == '__main__':
                     print "Chegou no destino"
                     print "drone para"
                     time.sleep(1)
-					print "drone pousa"
+		    print "drone pousa"
                 else:
                     #----------SE MOVE PARA AJUSTE INICIAL DE ANGULO -------------------------
 
@@ -175,7 +175,7 @@ if __name__ == '__main__':
                             time.sleep(1)
             else:
                 print "Procurando por satelites..."
-            time.sleep(0.5)
+            time.sleep(3)
 
     #Ctrl C
     except KeyboardInterrupt:
