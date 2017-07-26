@@ -1,0 +1,2 @@
+Abre Terminal
+python <nomeDoArquivo>
