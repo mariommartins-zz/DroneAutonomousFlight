@@ -38,7 +38,7 @@ if __name__ == '__main__':
         gpsc.start()
         while True:
             if ( len(gpsc.satellites) > 0 ):
-	        print "latitude ", gpsc.fix.latitude
+				print "latitude ", gpsc.fix.latitude
                 print "longitude ", gpsc.fix.longitude
                 print "time utc ", gpsc.utc, " + ", gpsc.fix.time
                 print "altitude (m)", gpsc.fix.altitude
@@ -52,7 +52,7 @@ if __name__ == '__main__':
                 print "mode ", gpsc.fix.mode
                 print "sats ", gpsc.satellites
             else:
-		print "Looking for satellites"
+				print "Looking for satellites"
 	    time.sleep(0.5)
 
     #Ctrl C
