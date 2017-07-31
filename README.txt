@@ -1,7 +1,7 @@
-Autoria: Mario Augusto Mota Martins - 2017 - UFBA
+﻿Autoria: Mario Augusto Mota Martins - 2017 - UFBA
 Professor Orientador: Flavio Assis
 
-Connecting GPS to rapsberry pi 3
+>>>>>>>Connecting GPS to rapsberry pi 3<<<<<<<
 	---Jessie OS---
 	
 	>A ligação do GPS é vcc (pin 4), gnd (pin 6), rx (pin 8) e tx (pino 10)
@@ -51,6 +51,10 @@ Connecting GPS to rapsberry pi 3
 	
 	http://www.stuffaboutcode.com/2013/09/raspberry-pi-gps-setup-and-python.html
 
-Rodando o Codigo
+>>>>>>>Rodando o Codigo<<<<<<<
 	Abre Terminal
 	python <nomeDoArquivo>
+
+>>>>>>>Usando o raspberry por SSH<<<<<<<
+https://anwaarullah.wordpress.com/2013/07/16/direct-access-raspberry-pi-shell-and-desktop/
+
