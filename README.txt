@@ -36,7 +36,7 @@ Professor Orientador: Flavio Assis
 	sudo gpsd /dev/ttyS0 -F -n /var/run/gpsd.sock
 	(it`s important to use the -n command, so it`ll not return error without waitting for connection properlly)
 	
-	sudo gpsmon /dev/ttyS0
+	'
 	(It will take a lot of time if you are indoor to find a sattelite, with me it took around an hour next to the window)
 	
 	sudo cgps -s
@@ -51,10 +51,29 @@ Professor Orientador: Flavio Assis
 	
 	http://www.stuffaboutcode.com/2013/09/raspberry-pi-gps-setup-and-python.html
 
+>>>>>>>Acessando raspberry por SSH<<<<<<<
+
+rasp ip=169.254.91.222
+
+https://anwaarullah.wordpress.com/2013/07/16/direct-access-raspberry-pi-shell-and-desktop/
+
+caso for windows e ele n reconheça a conexão, resete o adapter
+	win+r
+		devmgmt.msc
+			Network adapters
+				Realtek PCIe GBE Family Controller
+					Disable + Enable
+
 >>>>>>>Rodando o Codigo<<<<<<<
 	Abre Terminal
 	python <nomeDoArquivo>
 
->>>>>>>Usando o raspberry por SSH<<<<<<<
-https://anwaarullah.wordpress.com/2013/07/16/direct-access-raspberry-pi-shell-and-desktop/
+>>>>>>>Teste de calculo de angulação<<<<<<<
 
+	Rota:
+		UFBA
+			Lat:-13.002486
+			Lng:-38.509006
+		Casa
+			Lat:-12.893512
+			Lng:-38.459275

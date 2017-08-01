@@ -41,7 +41,7 @@ def getDistanceByCoordinates(latI,longI,latF,longF):
     meterConversion = 1609
 
     distance = distance * meterConversion
-    print "Distancia: "+distance
+    print "Distancia: ",distance
 
     return distance
 #			Teste
@@ -52,39 +52,42 @@ def getDistanceByCoordinates(latI,longI,latF,longF):
 #-12.957065, -38.353690
 
 def getCoefAng(latI,longI,latF,longF):
-    return ( ( latF - latI ) / ( longF - longI ) )
+    if (latI==latF):
+        latF = latF + 0.000001
+    return ( ( longF - longI ) / ( latF - latI ) )
 
 def getAngle(latI,longI,latA,longA,latF,longF):
 		#Multiplicando por 10000 pois se notou que para distancias curtas de poucos metros
 		#	a variacao das cordenadas se da a partir da quarta casa decimal
-    latI = (latI - latA) * 10000
-    longI = (longI - longA) * 10000
-    latF = (latF - latA) * 10000
-    longF = (longF - longA) * 10000
-    latA = 0
-    longA = 0
-
-    coefAngI = getCoefAng(longI, longI, latA, longA)
+    coefAngI = getCoefAng(latI, longI, latA, longA)
     coefAngF = getCoefAng(latA, longA, latF, longF)
 
     tangAngulo = ( ( coefAngI - coefAngF ) / ( 1 + ( coefAngI * coefAngF ) ) )
 
     sentido = True #Direita = True / Esquerda = False
 
-    if(tangAlpha < 0):
+    if(tangAngulo < 0):
         tangAngulo = tangAngulo*(-1)
         sentido = False
 
     angulo = math.degrees(math.atan(tangAngulo))
 
+	#se o ponto de destino for mais perto do inicial que o atual
+	#usar complemento do angulo em 180
+    distFim = getDistanceByCoordinates(latI,longI,latF,longF)
+    distAtual = getDistanceByCoordinates(latI,longI,latA,longA)
+	
+    if(distFim < distAtual):
+		angulo = 180-angulo
+	
     if(angulo>170):
-        print "Angulo corrigido de "+angulo+" para 170 por limitacao da biblioteca"
+        print "Angulo corrigido de ",angulo," para 170 por limitacao da biblioteca"
         angulo = 170 #limitacao de biblioteca descrita na documentacao
 
     if(sentido==False):
         angulo = angulo*(-1)
 
-    print "Angulo de curvatura: "+angulo
+    print "Angulo de curvatura: ",angulo
 
     return angulo
 

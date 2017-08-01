@@ -44,6 +44,8 @@ def getAngle(latI,longI,latA,longA,latF,longF):
 
     angulo = math.degrees(math.atan(tangAngulo))
 
+    #se o ponto de destino for mais perto do inicial que o atual
+	#usar complemento do angulo em 180
     distFim = getDistanceByCoordinates(latI,longI,latF,longF)
     distAtual = getDistanceByCoordinates(latI,longI,latA,longA)
 	
@@ -64,7 +66,6 @@ def getAngle(latI,longI,latA,longA,latF,longF):
 
 def main():
 
-   getAngle(-12.893356, -38.458330, -12.893351, -38.457493, -12.893923, -38.457504)
+   getAngle(-12.893356, -38.458330, -12.893351, -38.457493, -12.892760, -38.457504)
 
 if __name__ == "__main__": main()
-
