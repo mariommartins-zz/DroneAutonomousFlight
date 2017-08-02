@@ -106,9 +106,11 @@ def getAngle(latI,longI,latA,longA,latF,longF):
 #latDest = -12.901878
 #longDest = -38.457580
 #UFBA
-latDest = -13.002755
-longDest = -38.506940
-
+#latDest = -13.002755
+#longDest = -38.506940
+#TCA
+latDest = -12.988789
+longDest = -38.520005
 #-----------------------------------------------------
 
 if __name__ == '__main__':
@@ -133,9 +135,14 @@ if __name__ == '__main__':
 
                 #-------VERIFICA SE POSIcaO INICIAL == DESTINO---------------------------------
                 print "Verifica direcao e sentido do drone"
+		
 		latAtual = gpsc.fix.latitude
                 longAtual = gpsc.fix.longitude
-
+		
+		#teste
+		#latAnt = -13.000805
+		#longAnt =  -38.507584
+	
                 distancia = getDistanceByCoordinates(latAtual,longAtual,latDest,longDest)
                 if distancia < 1:
                     print "Chegou no destino"
@@ -152,7 +159,7 @@ if __name__ == '__main__':
 
                     latAtual = gpsc.fix.latitude
                     longAtual = gpsc.fix.longitude
-
+		
                     angulo = getAngle(latAnt,longAnt,latAtual,longAtual,latDest,longDest)
 		    time.sleep(1)
                     #---------INICIA LOOP PARA CORREcaO DE ROTA/VELOCIDADE ATe DESTINO
@@ -189,7 +196,7 @@ if __name__ == '__main__':
 
                             angulo = getAngle(latAnt,longAnt,latAtual,longAtual,latDest,longDest)
 
-                            time.sleep(1)
+                            time.sleep(2)
             else:
                 print "Procurando por satelites..."
             time.sleep(3)
@@ -207,7 +214,7 @@ if __name__ == '__main__':
         print "Stopping gps controller"
         gpsc.stopController()
         print "Pousando drone"
-        time.sleep(5)
+        time.sleep(1)
         #wait for the tread to finish
         gpsc.join()
 
