@@ -147,7 +147,7 @@ def startRoute():
                     longAnt = longAtual
 
                     drone.moveForward()
-                    time.sleep(1)
+                    time.sleep(3)
                     drone.stop()
                     time.sleep(2)
 
