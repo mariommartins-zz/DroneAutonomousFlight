@@ -51,31 +51,39 @@ def getDistanceByCoordinates(latI,longI,latF,longF):
 #Farol de Itapua
 #-12.957065, -38.353690
 
+def getDestinoDirection(latI,longI,latA,longA,latF,longF):
+    return ( longF - longI ) * ( latA - latI ) - ( latF - latI ) * ( longA - longI )
+
 def getCoefAng(latI,longI,latF,longF):
-    if (latI==latF):
-        latF = latF + 0.000001
-    return ( ( longF - longI ) / ( latF - latI ) )
+    if (longI==longF):
+        longF = longF + 0.000001
+    return ( ( latF - latI ) / ( longF - longI ) )
 
 def getAngle(latI,longI,latA,longA,latF,longF):
-		#Multiplicando por 10000 pois se notou que para distancias curtas de poucos metros
-		#	a variacao das cordenadas se da a partir da quarta casa decimal
+	
+	direction = getDestinoDirection(latI,longI,latA,longA,latF,longF)
+
+    sentido = True #Direita = True / Esquerda = False
+    if (direction == 0):
+    	return 0
+    elif (direction < 0):
+    	sentido = False
+		
     coefAngI = getCoefAng(latI, longI, latA, longA)
     coefAngF = getCoefAng(latA, longA, latF, longF)
 
+		
     tangAngulo = ( ( coefAngI - coefAngF ) / ( 1 + ( coefAngI * coefAngF ) ) )
-
-    sentido = True #Direita = True / Esquerda = False
 
     if(tangAngulo < 0):
         tangAngulo = tangAngulo*(-1)
-        sentido = False
 
     angulo = math.degrees(math.atan(tangAngulo))
 
 	#se o ponto de destino for mais perto do inicial que o atual
 	#usar complemento do angulo em 180
     distFim = getDistanceByCoordinates(latI,longI,latF,longF)
-    distAtual = getDistanceByCoordinates(latI,longI,latA,longA)
+    distAtual = getDistanceByCoordinates(latA,longA,latF,longF)
 	
     if(distFim < distAtual):
 		angulo = 180-angulo
@@ -84,7 +92,7 @@ def getAngle(latI,longI,latA,longA,latF,longF):
         print "Angulo corrigido de ",angulo," para 170 por limitacao da biblioteca"
         angulo = 170 #limitacao de biblioteca descrita na documentacao
 
-    if(sentido==False):
+    if((sentido==False)and(angulo>0)):
         angulo = angulo*(-1)
 
     print "Angulo de curvatura: ",angulo
@@ -92,9 +100,16 @@ def getAngle(latI,longI,latA,longA,latF,longF):
     return angulo
 
 #---------------COORDENADAS DO DESTINO----------------
-#Coliseu DO FORRo
-latDest = -12.893512
-longDest = -38.459275
+#CASA
+#latDest = -12.893525
+#longDest = -38.459263
+#IGREJINHA
+#latDest = -12.901878
+#longDest = -38.457580
+#UFBA
+latDest = -13.002755
+longDest = -38.506940
+
 #-----------------------------------------------------
 
 if __name__ == '__main__':
@@ -119,7 +134,7 @@ if __name__ == '__main__':
 
                 #-------VERIFICA SE POSIcaO INICIAL == DESTINO---------------------------------
                 print "Verifica direcao e sentido do drone"
-		latAtual = gpsc.fix.latitude
+				latAtual = gpsc.fix.latitude
                 longAtual = gpsc.fix.longitude
 
                 distancia = getDistanceByCoordinates(latAtual,longAtual,latDest,longDest)
@@ -127,7 +142,7 @@ if __name__ == '__main__':
                     print "Chegou no destino"
                     print "drone para"
                     time.sleep(1)
-		    print "drone pousa"
+					print "drone pousa"
                 else:
                     #----------SE MOVE PARA AJUSTE INICIAL DE ANGULO -------------------------
 
@@ -140,7 +155,7 @@ if __name__ == '__main__':
                     longAtual = gpsc.fix.longitude
 
                     angulo = getAngle(latAnt,longAnt,latAtual,longAtual,latDest,longDest)
-
+					time.sleep(1)
                     #---------INICIA LOOP PARA CORREcaO DE ROTA/VELOCIDADE ATe DESTINO
                     arrived = False
                     while not arrived:

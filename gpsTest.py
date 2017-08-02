@@ -15,19 +15,28 @@ def getDistanceByCoordinates(latI,longI,latF,longF):
 
     return distance
 
+def getDestinoDirection(latI,longI,latA,longA,latF,longF):
+    return ( longF - longI ) * ( latA - latI ) - ( latF - latI ) * ( longA - longI )
+
 def getCoefAng(latI,longI,latF,longF):
-    if (latI==latF):
-        latF = latF + 0.000001
-    return ( ( longF - longI ) / ( latF - latI ) )
+    if (longI==longF):
+        longF = longF + 0.000001
+    return ( ( latF - latI ) / ( longF - longI ) )
 
 def getAngle(latI,longI,latA,longA,latF,longF):
-                #Multiplicando por 10000 pois se notou que para distancias curtas de poucos $
-                #       a variacao das cordenadas se da a partir da quarta casa decimal
-
+    
     print "Inicio: ",latI,", ",longI
     print "Atual: ",latA,", ",longA
     print "Destino: ",latF,", ",longF
 
+    direction = getDestinoDirection(latI,longI,latA,longA,latF,longF)
+
+    sentido = True #Direita = True / Esquerda = False
+    if (direction == 0):
+    	return 0
+    elif (direction < 0):
+    	sentido = False
+		
     coefAngI = getCoefAng(latI, longI, latA, longA)
     print "Coeficiente da Inicial: ",coefAngI
     coefAngF = getCoefAng(latA, longA, latF, longF)
@@ -36,18 +45,15 @@ def getAngle(latI,longI,latA,longA,latF,longF):
     tangAngulo = ( ( coefAngI - coefAngF ) / ( 1 + ( coefAngI * coefAngF ) ) )
     print "Tangente do Angulo: ",tangAngulo
 
-    sentido = True #Direita = True / Esquerda = False
     if(tangAngulo < 0):
         tangAngulo = tangAngulo*(-1)
-        print "vai pra esquerda"
-        sentido = False
 
     angulo = math.degrees(math.atan(tangAngulo))
 
-    #se o ponto de destino for mais perto do inicial que o atual
+    #se o ponto de destino for mais perto do inicial que do atual
 	#usar complemento do angulo em 180
     distFim = getDistanceByCoordinates(latI,longI,latF,longF)
-    distAtual = getDistanceByCoordinates(latI,longI,latA,longA)
+    distAtual = getDistanceByCoordinates(latA,longA,latF,longF)
 	
     if(distFim < distAtual):
 		angulo = 180-angulo
@@ -56,7 +62,7 @@ def getAngle(latI,longI,latA,longA,latF,longF):
         print "Angulo corrigido de ",angulo," para 170 por limitacao da biblioteca"
         angulo = 170 #limitacao de biblioteca descrita na documentacao
 
-    if(sentido==False):
+    if((sentido==False)and(angulo>0)):
         angulo = angulo*(-1)
 
     print "Angulo de curvatura: ",angulo
@@ -66,6 +72,22 @@ def getAngle(latI,longI,latA,longA,latF,longF):
 
 def main():
 
-   getAngle(-12.893356, -38.458330, -12.893351, -38.457493, -12.892760, -38.457504)
-
+    #LAT-LONG -> esquerda
+    getAngle(-12.893271, -38.457557,-12.893344, -38.457495,-12.892784, -38.457510)
+    #LAT-LONG -> direita
+    #getAngle(-12.893360, -38.457702,-12.893344, -38.457495,-12.893924, -38.457470)
+    #LONG-LAT -> esquerda
+    #getAngle(-38.458396,-12.893347, -38.457495,-12.893344, -38.457510,-12.892784)
+    #LONG-LAT -> direita
+    #getAngle(-38.458396,-12.893347, -38.457495,-12.893344, -38.457470,-12.893924)
+    
+    #y-x -> esquerda _ -135 _ -135
+    #getAngle(-1,-1,1,1,1,-1)
+    #y-x -> direta _ 45 _ 45
+    #getAngle(-1,-1,1,1,1,2)
+    #x-y -> esquerda _ 135 _ 135
+    #getAngle(-1,-1,1,1,-1,1)
+    #x-y -> direta _ -45 _ -45
+    #getAngle(-1,-1,1,1,2,1)
+    
 if __name__ == "__main__": main()

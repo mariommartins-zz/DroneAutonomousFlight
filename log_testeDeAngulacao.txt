@@ -1,0 +1,30 @@
+Inicio:  -12.893358 ,  -38.458755
+Atual:  -12.893337 ,  -38.4575
+Destino:  -12.89421 ,  -38.457473
+Coeficiente da Inicial:  59.7619047659
+Coeficiente da Final:  -0.0309278350549
+Tangente do Angulo:  -70.4849536815
+vai pra esquerda
+Angulo de curvatura:  -89.1871749535
+
+inicio
+S
+-12.893356, -38.458330
+
+atual
+-12.893351, -38.457493
+
+esquerda
+-12.892760, -38.457504
+direita
+-12.893923, -38.457469
+
+NOT OK
+não sei pra qual lado virar
+
+NOT OK
+não sei se levo em conta o angulo ou o complemento dele em 180º
+	se o ponto de destino for mais perto do inicial que o atual
+		complemento em 180º
+	se não
+		angulo
