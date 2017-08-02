@@ -61,7 +61,7 @@ def getCoefAng(latI,longI,latF,longF):
 
 def getAngle(latI,longI,latA,longA,latF,longF):
 	
-	direction = getDestinoDirection(latI,longI,latA,longA,latF,longF)
+    direction = getDestinoDirection(latI,longI,latA,longA,latF,longF)
 
     sentido = True #Direita = True / Esquerda = False
     if (direction == 0):
@@ -71,8 +71,7 @@ def getAngle(latI,longI,latA,longA,latF,longF):
 		
     coefAngI = getCoefAng(latI, longI, latA, longA)
     coefAngF = getCoefAng(latA, longA, latF, longF)
-
-		
+	
     tangAngulo = ( ( coefAngI - coefAngF ) / ( 1 + ( coefAngI * coefAngF ) ) )
 
     if(tangAngulo < 0):
@@ -80,13 +79,13 @@ def getAngle(latI,longI,latA,longA,latF,longF):
 
     angulo = math.degrees(math.atan(tangAngulo))
 
-	#se o ponto de destino for mais perto do inicial que o atual
-	#usar complemento do angulo em 180
+    #se o ponto de destino for mais perto do inicial que o atual
+    #usar complemento do angulo em 180
     distFim = getDistanceByCoordinates(latI,longI,latF,longF)
     distAtual = getDistanceByCoordinates(latA,longA,latF,longF)
 	
     if(distFim < distAtual):
-		angulo = 180-angulo
+	angulo = 180-angulo
 	
     if(angulo>170):
         print "Angulo corrigido de ",angulo," para 170 por limitacao da biblioteca"
@@ -134,7 +133,7 @@ if __name__ == '__main__':
 
                 #-------VERIFICA SE POSIcaO INICIAL == DESTINO---------------------------------
                 print "Verifica direcao e sentido do drone"
-				latAtual = gpsc.fix.latitude
+		latAtual = gpsc.fix.latitude
                 longAtual = gpsc.fix.longitude
 
                 distancia = getDistanceByCoordinates(latAtual,longAtual,latDest,longDest)
@@ -142,7 +141,7 @@ if __name__ == '__main__':
                     print "Chegou no destino"
                     print "drone para"
                     time.sleep(1)
-					print "drone pousa"
+		    print "drone pousa"
                 else:
                     #----------SE MOVE PARA AJUSTE INICIAL DE ANGULO -------------------------
 
@@ -155,7 +154,7 @@ if __name__ == '__main__':
                     longAtual = gpsc.fix.longitude
 
                     angulo = getAngle(latAnt,longAnt,latAtual,longAtual,latDest,longDest)
-					time.sleep(1)
+		    time.sleep(1)
                     #---------INICIA LOOP PARA CORREcaO DE ROTA/VELOCIDADE ATe DESTINO
                     arrived = False
                     while not arrived:
