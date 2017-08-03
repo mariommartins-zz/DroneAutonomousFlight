@@ -155,7 +155,7 @@ def startRoute():
                         longAtual = gpsc.fix.longitude
 
                         distPercorrida = getDistanceByCoordinates(latAnt,longAnt,latAtual,longAtual)
-			time.sleep(0.5)
+		        time.sleep(0.5)
 
                     drone.stop()
 		    time.sleep(3)
@@ -222,7 +222,7 @@ def startRoute():
 			    	moduloAngulo = angulo*(-1)
 						
 			    #calcula variacao da velocidade com base no modulo do angulo, dado que foi conferido em testes que 
-			    # cada angulo de 60º demora cerca de 1 segundo para ser feito com acuracia maxima
+			    # cada angulo de 60 demora cerca de 1 segundo para ser feito com acuracia maxima
 			    #if((moduloAngulo>60)and(moduloAngulo<120)):
 			    # 	velocidade = velocidade / 2
 			    # 	print "Velocidade dividida pela metade para curvar corretamente"
@@ -235,7 +235,7 @@ def startRoute():
 				drone.turnAngle(angulo,1,1)
 
 			    #drone.setSpeed(velocidade)
-			    #drone.moveForward()
+			    drone.moveForward()
 
             else:
                 print "Procurando por satelites..."
