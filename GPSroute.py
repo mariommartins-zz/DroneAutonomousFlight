@@ -121,7 +121,8 @@ drone = ps_drone.Drone()
 def startRoute():
     try:
 	global velocidade
-        while True:
+        arrived = False
+        while not arrived:
             if ( len(gpsc.satellites) > 0 ):
 
                 #-------VERIFICA SE POSICAO INICIAL == DESTINO---------------------------------
@@ -129,17 +130,21 @@ def startRoute():
                 longAtual = gpsc.fix.longitude
 
                 distancia = getDistanceByCoordinates(latAtual,longAtual,latDest,longDest)
-                if distancia < 3:
+                if distancia < 2:
                     drone.stop()
                     time.sleep(2)
                     drone.land() #Pousa
+		    arrived = True
                     print "Chegou no destino"
                 else:
 		    #-------LEVANTA VOO-----------------------------------------------------------
                     drone.takeoff()
                     print "Levantando voo..."
-                    #while drone.NavData["demo"][0][2]: time.sleep(0.1)	#Aguarda takeoff acabar
-		    time.sleep(7)
+                    while drone.NavData["demo"][0][2]: time.sleep(0.1)	#Aguarda takeoff acabar
+		    drone.moveUp()
+		    time.sleep(5)
+		    drone.stop()
+		    time.sleep(1)
 
                     #----------SE MOVE PARA AJUSTE INICIAL DE ANGULO -------------------------
 
@@ -171,11 +176,12 @@ def startRoute():
                         print "Angulo de curvatura: {}".format(angulo)
                         drone.turnAngle(angulo,1,1)
                         time.sleep(4)
+		    else:
+			print "Segue direto"
 					
 		    drone.moveForward()
 
                     #---------INICIA LOOP PARA CORRECAO DE ROTA/VELOCIDADE ATE DESTINO--------
-                    arrived = False
                     while not arrived:
 
                         latAnt = latAtual
@@ -193,7 +199,7 @@ def startRoute():
                         distancia = getDistanceByCoordinates(latAtual,longAtual,latDest,longDest)
 			print "Distancia: {}".format(distancia)
                         
-			if ((distancia < 3) or (len(gpsc.satellites) == 0)):
+			if ((distancia < 2) or (len(gpsc.satellites) == 0)):
                             drone.stop()
                             time.sleep(4)
                             drone.land() #Pousa
@@ -233,6 +239,9 @@ def startRoute():
 			    if(moduloAngulo>10):
 				print "Angulo de curvatura: {}".format(angulo)
 				drone.turnAngle(angulo,1,1)
+			    else:
+	                        print "Segue direto"
+
 
 			    #drone.setSpeed(velocidade)
 			    drone.moveForward()
