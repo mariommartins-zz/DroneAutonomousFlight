@@ -52,39 +52,63 @@ def getDistanceByCoordinates(latI,longI,latF,longF):
 #Farol de Itapua
 #-12.957065, -38.353690
 
+def getDestinoDirection(latI,longI,latA,longA,latF,longF):
+    return ( longF - longI ) * ( latA - latI ) - ( latF - latI ) * ( longA - longI )
+
 def getCoefAng(latI,longI,latF,longF):
+    if (longI==longF):
+        longF = longF + 0.000001
     return ( ( latF - latI ) / ( longF - longI ) )
 
 def getAngle(latI,longI,latA,longA,latF,longF):
-    coefAngI = getCoefAng(longI, longI, latA, longA)
-    coefAngF = getCoefAng(latA, longA, latF, longF)
-
-    tangAngulo = ( ( coefAngI - coefAngF ) / ( 1 + ( coefAngI * coefAngF ) ) )
+	
+    direction = getDestinoDirection(latI,longI,latA,longA,latF,longF)
 
     sentido = True #Direita = True / Esquerda = False
+    if (direction == 0):
+    	return 0
+    elif (direction < 0):
+    	sentido = False
+		
+    coefAngI = getCoefAng(latI, longI, latA, longA)
+    coefAngF = getCoefAng(latA, longA, latF, longF)
+	
+    tangAngulo = ( ( coefAngI - coefAngF ) / ( 1 + ( coefAngI * coefAngF ) ) )
 
-    if(tangAlpha < 0):
+    if(tangAngulo < 0):
         tangAngulo = tangAngulo*(-1)
-        sentido = False
 
     angulo = math.degrees(math.atan(tangAngulo))
 
+    #se o ponto de destino for mais perto do inicial que o atual
+    #usar complemento do angulo em 180
+    distFim = getDistanceByCoordinates(latI,longI,latF,longF)
+    distAtual = getDistanceByCoordinates(latA,longA,latF,longF)
+	
+    if(distFim < distAtual):
+	angulo = 180-angulo
+	
     if(angulo>170):
-        print "Angulo corrigido de "+angulo+" para 170 por limitacao da biblioteca"
+        print "Angulo corrigido de ",angulo," para 170 por limitacao da biblioteca"
         angulo = 170 #limitacao de biblioteca descrita na documentacao
 
-    if(sentido==False):
+    if((sentido==False)and(angulo>0)):
         angulo = angulo*(-1)
 
-    print "Angulo de curvatura: "+angulo
+    print "Angulo de curvatura: ",angulo
 
     return angulo
 
 #---------------COORDENADAS DO DESTINO----------------
-#Coliseu DO FORRo
-latDest = -12.966275
-longDest = -38.403925
-#-----------------------------------------------------
+#CASA
+#latDest = -12.893525
+#longDest = -38.459263
+#IGREJINHA
+#latDest = -12.901878
+#longDest = -38.457580
+#UFBA
+latDest = -13.002755
+longDest = -38.506940
 
 if __name__ == '__main__':
     # create the controller
@@ -120,7 +144,7 @@ if __name__ == '__main__':
                 distancia = getDistanceByCoordinates(latAtual,longAtual,latDest,longDest)
                 if distancia < 1:
                     drone.stop()
-                    time.sleep(1)
+                    time.sleep(2)
                     drone.land() #Pousa
                     print "Chegou no destino"
                 else:
@@ -132,7 +156,7 @@ if __name__ == '__main__':
                     drone.moveForward()
                     time.sleep(1)
                     drone.stop()
-                    time.sleep(1)
+                    time.sleep(2)
 
                     latAtual = gpsc.fix.latitude
                     longAtual = gpsc.fix.longitude
@@ -140,7 +164,7 @@ if __name__ == '__main__':
                     angulo = getAngle(latAnt,longAnt,latAtual,longAtual,latDest,longDest)
 
                     drone.turnAngle(angulo,1,1)
-                    time.sleep(2)
+                    time.sleep(4)
 
                     #---------INICIA LOOP PARA CORREcaO DE ROTA/VELOCIDADE ATe DESTINO
                     arrived = False
@@ -156,7 +180,7 @@ if __name__ == '__main__':
                         distancia = getDistanceByCoordinates(latAtual,longAtual,latDest,longDest)
                         if distancia < 1:
                             drone.stop()
-                            time.sleep(1)
+                            time.sleep(2)
                             drone.land() #Pousa
                             arrived = True
                             print "Chegou no destino"
@@ -178,14 +202,14 @@ if __name__ == '__main__':
                                 drone.setSpeed(1)
                                 print "Velocidade: 100%"
 
-                            drone.moveForward()
+								drone.moveForward()
                             angulo = getAngle(latAnt,longAnt,latAtual,longAtual,latDest,longDest)
                             drone.turnAngle(angulo,1,1)
 
                             time.sleep(1)
             else:
-                print "looking for satellites..."
-            time.sleep(0.5)
+                print "Procurando por satelites..."
+            time.sleep(3)
 
     #Ctrl C
     except KeyboardInterrupt:
@@ -201,7 +225,7 @@ if __name__ == '__main__':
         gpsc.stopController()
         print "Pousando drone"
         drone.stop()
-        time.sleep(5)
+        time.sleep(4)
         drone.land() #Pousa
         #wait for the tread to finish
         gpsc.join()
