@@ -42,7 +42,7 @@ def getDistanceByCoordinates(latI,longI,latF,longF):
     meterConversion = 1609
 
     distance = distance * meterConversion
-    #print "Distancia: "+distance
+    print "Distancia: {}".format(distance)
 
     return distance
 #			Teste
@@ -89,13 +89,13 @@ def getAngle(latI,longI,latA,longA,latF,longF):
 	angulo = 180-angulo
 	
     if(angulo>170):
-        #print "Angulo corrigido de ",angulo," para 170 por limitacao da biblioteca"
+        print "Angulo corrigido de {} para 170 por limitacao da biblioteca".format(angulo)
         angulo = 170 #limitacao de biblioteca descrita na documentacao
 
     if((sentido==False)and(angulo>0)):
         angulo = angulo*(-1)
 
-    #print "Angulo de curvatura: ",angulo
+    print "Angulo de curvatura: {}".format(angulo)
 
     return angulo
 
@@ -147,7 +147,7 @@ def startRoute():
                     longAnt = longAtual
 
                     drone.moveForward()
-                    time.sleep(1)
+                    time.sleep(3)
                     drone.stop()
                     time.sleep(2)
 

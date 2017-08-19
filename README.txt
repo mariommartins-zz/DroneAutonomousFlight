@@ -40,6 +40,8 @@ Professor Orientador: Flavio Assis
 	(It will take a lot of time if you are indoor to find a sattelite, with me it took around an hour next to the window)
 	
 	sudo cgps -s
+		or
+	sudo gpsmon /dev/ttyS0
 	
 	>Referencias
 	PRINCIPAL:
@@ -79,3 +81,11 @@ caso for windows e ele n reconheça a conexão, resete o adapter
 		Casa
 			Lat:-12.893512
 			Lng:-38.459275
+
+
+>>>>>>>Desativar módulos para economia de bateria<<<<<<<
+>Módulo HDMI
+>>Desativar
+/opt/vc/bin/tvservice -o 
+>>Ativar
+/opt/vc/bin/tvservice -p

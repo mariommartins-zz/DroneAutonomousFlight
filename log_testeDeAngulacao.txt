@@ -19,12 +19,26 @@ esquerda
 direita
 -12.893923, -38.457469
 
-NOT OK
-não sei pra qual lado virar
+Problemas:
 
-NOT OK
-não sei se levo em conta o angulo ou o complemento dele em 180º
+OK
+Achar o Ângulo que o drone tem que virar
+
+OK
+Saber pra qual lado virar
+
+OK
+Saber se levo em conta o angulo ou o complemento dele em 180º já que a fórmula só retorna um valor de 0º a 90º
 	se o ponto de destino for mais perto do inicial que o atual
 		complemento em 180º
 	se não
 		angulo
+
+OK
+Corrigir a velocidade com base no ângulo que o drone vai virar
+
+OK
+Saber o tempo que o drone leva para se curvar (1 seg para cada 75º)
+
+OK
+Se perder conexão com satélites ele pousa
