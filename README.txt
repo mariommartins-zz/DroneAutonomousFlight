@@ -54,6 +54,8 @@ Professor Orientador: Flavio Assis
 >>>>>>>Acessando raspberry por SSH<<<<<<<
 
 rasp ip=169.254.91.222
+login=pi
+password=raspberry
 
 https://anwaarullah.wordpress.com/2013/07/16/direct-access-raspberry-pi-shell-and-desktop/
 
