@@ -55,7 +55,11 @@ Professor Orientador: Flavio Assis
 
 >>>>>>>Acessando raspberry por SSH<<<<<<<
 
-rasp ip=169.254.91.222
+>Ethernet
+>>ip=169.254.91.222
+>Wifi
+>>ip=192.168.1.(entre 2 e 6)
+
 login=pi
 password=raspberry
 
