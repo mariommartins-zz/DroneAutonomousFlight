@@ -110,7 +110,8 @@ def getAngle(latI,longI,latA,longA,latF,longF):
 latDest = -13.0013262
 longDest = -38.5070985
 
-velocidade = 0.1 #equivalente a 2m/s
+#velocidadeMax = 1 #equivalente a 5m/s
+velocidade = 0.1 #equivalente a 0.5m/s, velocidade utilizada por limitacao da comunicacao do GPS com satelites 
 
 # create the controller
 gpsc = GpsController()
@@ -123,13 +124,7 @@ def startRoute():
         while True:
             if ( len(gpsc.satellites) > 0 ):
 
-                #-------LEVANTA VoO-----------------------------------------------------------
-                drone.takeoff()
-                print "Levantando voo..."
-                #while drone.NavData["demo"][0][2]: time.sleep(0.1)	#Aguarda takeoff acabar
-		time.sleep(7)
-
-                #-------VERIFICA SE POSIcaO INICIAL == DESTINO---------------------------------
+                #-------VERIFICA SE POSICAO INICIAL == DESTINO---------------------------------
                 latAtual = gpsc.fix.latitude
                 longAtual = gpsc.fix.longitude
 
@@ -140,6 +135,12 @@ def startRoute():
                     drone.land() #Pousa
                     print "Chegou no destino"
                 else:
+		    #-------LEVANTA VOO-----------------------------------------------------------
+                    drone.takeoff()
+                    print "Levantando voo..."
+                    #while drone.NavData["demo"][0][2]: time.sleep(0.1)	#Aguarda takeoff acabar
+		    time.sleep(7)
+
                     #----------SE MOVE PARA AJUSTE INICIAL DE ANGULO -------------------------
 
                     latAnt = latAtual
@@ -154,7 +155,6 @@ def startRoute():
                         longAtual = gpsc.fix.longitude
 
                         distPercorrida = getDistanceByCoordinates(latAnt,longAnt,latAtual,longAtual)
-                        print "distancia percorrida {}".format(distPercorrida)
 			time.sleep(0.5)
 
                     drone.stop()
@@ -174,7 +174,7 @@ def startRoute():
 					
 		    drone.moveForward()
 
-                    #---------INICIA LOOP PARA CORREcaO DE ROTA/VELOCIDADE ATe DESTINO
+                    #---------INICIA LOOP PARA CORRECAO DE ROTA/VELOCIDADE ATE DESTINO--------
                     arrived = False
                     while not arrived:
 
@@ -200,18 +200,19 @@ def startRoute():
                             arrived = True
                             print "Chegou no destino"
                         else:
-			    # Calcula Velocidade
+			    #Calcula variacao da velocidade em relacao a distancia
                             #if distancia < 5:
-				#velocidade = 0.02
-                                #print "Velocidade: 2%"
-
+			    #    velocidade = 0.02*velocidadeMax
+                            #    print "Velocidade: 100cm/s"
                             #elif distancia < 10:
-			#	velocidade = 0.1
-                         #       print "Velocidade: 10%"
-#
- #                           else:
-#				velocidade = 0.2
- #                               print "Velocidade: 50%"
+			    #	 velocidade = 0.1*velocidadeMax
+                            #    print "Velocidade: 500cm/s"
+                            #elif distancia < 30:
+			    #    velocidade = 0.5*velocidadeMax
+                            #    print "Velocidade: 2.5m/s"
+			    #else:
+			    #    velocidade = velocidadeMax
+                            #    print "Velocidade: 5m/s"
 
 			    angulo = getAngle(latAnt,longAnt,latAtual,longAtual,latDest,longDest)
                             
@@ -220,24 +221,21 @@ def startRoute():
 			    if(angulo<0):
 			    	moduloAngulo = angulo*(-1)
 						
-			    #calcula variacao da velocidade com base no modulo do angulo
-			    #if(moduloAngulo<60):
-			   # 	espera = 1
-			   # elif((moduloAngulo>60)and(moduloAngulo<120)):
-			   # 	espera = 2
-			   # 	velocidade = velocidade / 2
-			   # 	print "Velocidade dividida pela metade para curvar corretamente"
-			   # elif(moduloAngulo>120):
-			   # 	espera = 3
-			   # 	velocidade = velocidade / 3
-			   # 	print "Velocidade dividida ao terco para curvar corretamente"
+			    #calcula variacao da velocidade com base no modulo do angulo, dado que foi conferido em testes que 
+			    # cada angulo de 60º demora cerca de 1 segundo para ser feito com acuracia maxima
+			    #if((moduloAngulo>60)and(moduloAngulo<120)):
+			    # 	velocidade = velocidade / 2
+			    # 	print "Velocidade dividida pela metade para curvar corretamente"
+			    #elif(moduloAngulo>120):
+			    # 	velocidade = velocidade / 3
+			    # 	print "Velocidade dividida ao terco para curvar corretamente"
 			    
 			    if(moduloAngulo>10):
 				print "Angulo de curvatura: {}".format(angulo)
 				drone.turnAngle(angulo,1,1)
 
-			    drone.setSpeed(velocidade)
-			    drone.moveForward()
+			    #drone.setSpeed(velocidade)
+			    #drone.moveForward()
 
             else:
                 print "Procurando por satelites..."
