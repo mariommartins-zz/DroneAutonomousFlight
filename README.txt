@@ -89,3 +89,22 @@ caso for windows e ele n reconheça a conexão, resete o adapter
 /opt/vc/bin/tvservice -o 
 >>Ativar
 /opt/vc/bin/tvservice -p
+
+>>>>>>>Conectar e desconectar do AP ar.drone<<<<<<<<<<<<<
+>Para conectar e desconectar deve-se adicionar a network em um arquivo chamado wpa_supplicant.conf
+> e atualizar um arquivo chamado interfaces para conectar automaticamente em redes wifi preconfiguradas
+
+cd /etc/network
+sudo nano interfaces
+
+>modifica todo o conteudo da linha que contém "wlan0", colocando antes de "wlan0" apenas a palavra "auto"+espaço
+
+cd /etc/wpa_supplicant/
+sudo nano wpa_supplicant.conf
+
+>adiciona os dados do access point do ardrone e deleta o resto
+>>por exemplo:
+network={
+        ssid="ardrone_ufba"
+        key_mgmt=NONE
+}
